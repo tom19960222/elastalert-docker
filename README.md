@@ -1,8 +1,10 @@
 # Elastalert Docker Image
 Docker image with Elastalert on Alpine Linux.
 
-Requires a link to a Docker container running Elasticsearch using the "elasticsearchhost" alias.
-Assumes the use of port 9200 when communicating with Elasticsearch.<br/>
+Environment variables `ELASTICSEARCH_HOST` and `ELASTICSEARCH_PORT` is required.
+
+Since elastalert does not support environment variable subsitution, I added `envtpl` to generate config from a template file.
+
 In order for the time of the container to be synchronized (ntpd), it must be run with the SYS_TIME capability.
 In addition you may want to add the SYS_NICE capability, in order for ntpd to be able to modify its priority.
 
@@ -20,4 +22,3 @@ In addition you may want to add the SYS_NICE capability, in order for ntpd to be
 - ELASTICSEARCH_PASS - Password to access Elasticsearch (optional).
 - ELASTALERT_CONFIG - Elastalert configuration file path in configuration directory.
 - ELASTALERT_SUPERVISOR_CONF - Supervisor configuration file for Elastalert.
-
