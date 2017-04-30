@@ -14,4 +14,10 @@ In addition you may want to add the SYS_NICE capability, in order for ntpd to be
 # Environment
 - SET_CONTAINER_TIMEZONE - Set to "true" (without quotes) to set the tiemzone when starting a container. Default is false.
 - CONTAINER_TIMEZONE - Timezone to use in container. Default is Europe/Stockholm.
+- ELASTICSEARCH_HOST - Alias, DNS or IP of Elasticsearch host to be queried by Elastalert. Set in default Elasticsearch configuration file.
+- ELASTICSEARCH_PORT - Port on above Elasticsearch host. Set in default Elasticsearch configuration file.
+- ELASTICSEARCH_USER - Username to access Elasticsearch (optional).
+- ELASTICSEARCH_PASS - Password to access Elasticsearch (optional).
+- ELASTALERT_CONFIG - Elastalert configuration file path in configuration directory.
+- ELASTALERT_SUPERVISOR_CONF - Supervisor configuration file for Elastalert.
 

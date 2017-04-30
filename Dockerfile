@@ -1,11 +1,13 @@
 # Elastalert Docker image running on Alpine Linux.
-# Build image with: docker build -t ivankrizsan/elastalert:latest .
+# Build image with: docker build -t tom19960222/elastalert:latest .
+#
+# This Dockerfile forked from krizsan/elastalert-docker
 #
 # The WORKDIR instructions are deliberately left, as it is recommended to use WORKDIR over the cd command.
 
 FROM iron/python:2
 
-MAINTAINER Ivan Krizsan, https://github.com/krizsan
+MAINTAINER Ikaros, https://github.com/tom19960222
 
 # Set this environment variable to true to set timezone on container start.
 ENV SET_CONTAINER_TIMEZONE false
@@ -31,6 +33,9 @@ ENV ELASTALERT_SUPERVISOR_CONF ${CONFIG_DIR}/elastalert_supervisord.conf
 ENV ELASTICSEARCH_HOST elasticsearchhost
 # Port on above Elasticsearch host. Set in default Elasticsearch configuration file.
 ENV ELASTICSEARCH_PORT 9200
+# Elastalert configuration file template path.
+# Since elastalert does not support environment variable subsitution, we use envtpl to generate config from a template file.
+ENV ELASTALERT_CONFIG_TEMPLATE ${ELASTALERT_CONFIG}.tpl
 
 WORKDIR /opt
 
@@ -40,7 +45,7 @@ COPY ./start-elastalert.sh /opt/
 # Install software required for Elastalert and NTP for time synchronization.
 RUN apk update && \
     apk upgrade && \
-    apk add ca-certificates openssl-dev libffi-dev python-dev gcc musl-dev tzdata openntpd && \
+    apk add ca-certificates openssl-dev libffi-dev python-dev gcc musl-dev tzdata openntpd curl && \
     rm -rf /var/cache/apk/* && \
 # Install pip - required for installation of Elastalert.
     wget https://bootstrap.pypa.io/get-pip.py && \
@@ -62,6 +67,9 @@ RUN python setup.py install && \
 
 # Install Supervisor.
     easy_install supervisor && \
+
+# Install envtpl.
+    pip install envtpl && \
 
 # Make the start-script executable.
     chmod +x /opt/start-elastalert.sh && \
